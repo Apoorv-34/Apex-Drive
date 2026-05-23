@@ -28,6 +28,12 @@ public class CarController : MonoBehaviour
     public float brakePower = 5000f;
     public Transform centerOfMass;
 
+    [Header("Effects")]
+    public TrailRenderer[] trailRenderers;
+
+  
+
+
     private Rigidbody carRigidbody;
     private float motorTorque;
     private float vertical;
@@ -43,6 +49,7 @@ public class CarController : MonoBehaviour
         {
             carRigidbody.centerOfMass = centerOfMass.localPosition;
         }
+       
     }
 
     void Update()
@@ -76,10 +83,12 @@ public class CarController : MonoBehaviour
         {
             motorTorque = 0;
             ApplyBrake();
-        }
+            EnableTrailEffect(true);
+            }
         else
         {
             ReleaseBrake();
+            EnableTrailEffect(false);
             if (carSpeedConverted < maximumSpeed)
             {
                 motorTorque = maximumMotorTorque * vertical;
@@ -152,4 +161,11 @@ public class CarController : MonoBehaviour
         backWheelRight.transform.position = position;
         backWheelRight.transform.rotation = rotation;
     }
+    void EnableTrailEffect(bool enable)
+{
+    foreach (TrailRenderer trail in trailRenderers)
+    {
+        trail.emitting = enable;
+    }
+}
 }
